@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  nestjs:
+    container_name: api
+    restart: always
+    build:
+      context: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - '.:/usr/src/app/'
+      - "/usr/src/app/node_modules"
+    depends_on:
+      - mongo
+    networks:
+      - api-networks
+  mongo:
+    container_name: db
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${USERNAME_DB}
+      - MONGO_INITDB_ROOT_PASSWORD=${PASSWORD_DB}
+    ports:
+      - ${PORT_DB}:${PORT_DB}
+    networks:
+      - api-networks
+    volumes:
+      - "mongo-data:/data/db"
+    expose:
+      - ${PORT_DB}
+    # command: mongod --auth
+
+networks:
+  api-networks:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: "local"
