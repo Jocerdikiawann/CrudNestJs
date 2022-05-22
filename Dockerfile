@@ -1,7 +1,9 @@
 FROM node:slim
 WORKDIR /usr/src/app
+COPY package*.json /usr/src/app
+RUN npm install --only=development
 COPY . .
-RUN npm install
-COPY . .
+RUN npm run build
 EXPOSE ${PORT}
-CMD [ "npm","run start:dev" ]
+EXPOSE 5555
+CMD ["node", "dist/main"]
