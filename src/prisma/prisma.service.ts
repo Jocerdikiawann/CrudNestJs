@@ -6,7 +6,7 @@ import { env } from 'process';
 export class PrismaService extends PrismaClient {
   constructor() {
     super({
-      datasource: {
+      datasources: {
         db: {
           url: env.DATABASE_URL,
         },
