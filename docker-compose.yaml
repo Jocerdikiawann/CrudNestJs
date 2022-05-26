@@ -1,21 +1,21 @@
 version: '3.9'
 
 services:
-  nestjs:
-    container_name: api
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - ${PORT}:${PORT}
-    volumes:
-      - '.:/usr/src/app/'
-      - "/usr/src/app/node_modules"
-    depends_on:
-      - mongo
-    networks:
-      - api-networks
+  # nestjs:
+  #   container_name: api
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - ${PORT}:${PORT}
+  #   volumes:
+  #     - '.:/usr/src/app/'
+  #     - "/usr/src/app/node_modules"
+  #   depends_on:
+  #     - mongo
+  #   networks:
+  #     - api-networks
   mongo:
     container_name: db
     image: mongo:latest
@@ -31,7 +31,7 @@ services:
       - "mongo-data:/data/db"
     expose:
       - ${PORT_DB}
-    # command: mongod --auth
+    command: mongod --auth
 
 networks:
   api-networks:
