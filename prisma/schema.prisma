@@ -11,20 +11,21 @@ datasource db {
 }
 
 model Auth {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
-  password String
-  userId String @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  firstName String 
-  lastName String
-  address String
-  profile String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  auth Auth @relation(fields: [authId],references: [id])
+  authId    String   @db.ObjectId
+  firstName String
+  lastName  String
+  address   String
+  profile   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
