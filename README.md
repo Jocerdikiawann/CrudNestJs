@@ -29,7 +29,14 @@
 ## Installation
 
 ```bash
+$ docker-compose up
 $ npm install
+```
+## Setup
+```bash
+$ touch .env
+# setting database url on .env
+$ DATABASE_URL=YOUR_DATABASE_URL
 ```
 
 ## Running the app
@@ -38,9 +45,16 @@ $ npm install
 # development
 $ npm run start
 
-# watch mode
-$ npm run start:dev
+```
 
+```bash
+
+$ npx prisma generate
+# i`m using watch mode
+$ npm run start:dev
+```
+
+```bash
 # production mode
 $ npm run start:prod
 ```
