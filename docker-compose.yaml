@@ -18,20 +18,24 @@ services:
   #     - api-networks
   mongo:
     container_name: db
-    image: mongo:latest
+    image: bitnami/mongodb:latest 
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${USERNAME_DB}
-      - MONGO_INITDB_ROOT_PASSWORD=${PASSWORD_DB}
+      - MONGODB_ADVERTISED_HOSTNAME=127.0.0.1
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=${PASSWORD_DB}
+      - MONGODB_REPLICA_SET_KEY=replica123
+      - MONGODB_USERNAME=${USERNAME_DB}
+      - MONGODB_PASSWORD=${PASSWORD_DB}
+      - MONGODB_DATABASE=${DB_NAME}
     ports:
       - ${PORT_DB}:${PORT_DB}
     networks:
       - api-networks
     volumes:
-      - "mongo-data:/data/db"
+      - "mongo-data:/bitnami/mongodb"
     expose:
       - ${PORT_DB}
-    command: mongod --auth
 
 networks:
   api-networks:
