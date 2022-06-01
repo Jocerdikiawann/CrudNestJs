@@ -23,7 +23,7 @@ export class AuthController {
   signUp(
     @Body() req: AuthDto,
     @Body() reqUserDto: UserDto,
-  ) {
+  ): Promise<{ access_token: string }> {
     return this.authService.signUp(
       req,
       reqUserDto,
