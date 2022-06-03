@@ -6,7 +6,9 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { hash, verify } from 'argon2';
+import { GlobalResponseDto } from 'src/dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { fromUserDtoToRequestBody } from 'src/utils/utils';
 import { AuthDto, UserDto } from './dto';
 
 @Injectable({})
@@ -72,7 +74,9 @@ export class AuthService {
   async signUp(
     authDto: AuthDto,
     userDto: UserDto,
-  ) {
+  ): Promise<
+    GlobalResponseDto<{ access_token: string }>
+  > {
     const hashPassword = await hash(
       authDto.password,
     );
@@ -80,12 +84,7 @@ export class AuthService {
     try {
       const createdUser =
         await this.prisma.user.create({
-          data: {
-            firstName: userDto.firstName,
-            lastName: userDto.lastName,
-            address: userDto.address,
-            profile: userDto.profile,
-          },
+          data: fromUserDtoToRequestBody(userDto),
         });
 
       const createdAuth =
@@ -107,10 +106,15 @@ export class AuthService {
             updatedAt: true,
           },
         });
-      return this.signToken(
+      const token = await this.signToken(
         createdAuth.id,
         createdAuth.email,
       );
+      return {
+        statusCode: 201,
+        message: 'success',
+        data: token,
+      };
     } catch (e) {
       if (
         e instanceof PrismaClientKnownRequestError

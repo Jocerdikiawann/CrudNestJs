@@ -3,6 +3,7 @@ import {
   Controller,
   Post,
 } from '@nestjs/common';
+import { GlobalResponseDto } from 'src/dto';
 import { AuthService } from './auth.service';
 import { AuthDto, UserDto } from './dto';
 
@@ -23,7 +24,9 @@ export class AuthController {
   signUp(
     @Body() req: AuthDto,
     @Body() reqUserDto: UserDto,
-  ): Promise<{ access_token: string }> {
+  ): Promise<
+    GlobalResponseDto<{ access_token: string }>
+  > {
     return this.authService.signUp(
       req,
       reqUserDto,

@@ -1,12 +1,12 @@
 import {
-  IsBoolean,
   IsNotEmpty,
+  IsNumber,
   IsString,
 } from 'class-validator';
 
 export class GlobalResponseDto<T> {
-  @IsBoolean()
-  success: boolean;
+  @IsNumber()
+  statusCode: number;
   @IsString()
   message: string;
   @IsNotEmpty()
